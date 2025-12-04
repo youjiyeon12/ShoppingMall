@@ -7,33 +7,8 @@
 		<link rel="stylesheet" th:href="@{/css/main.css}">
 	</th:block>
 </head>
-<script>
-		function changeCategory(element, category) {
-			event.preventDefault();
-
-			// 모든 링크에서 active 제거
-			const links = document.querySelectorAll('.category-link');
-			links.forEach(link => {
-				link.classList.remove('active');
-			});
-
-			// 클릭한 링크에 active 추가
-			element.classList.add('active');
-
-			// 제목 변경
-			const titleElement = document.getElementById('category-title');
-			if (category === 'WOMEN') {
-				titleElement.textContent = '여성 양말';
-			} else if (category === 'MEN') {
-				titleElement.textContent = '남성 양말';
-			} else if (category === 'KIDS') {
-				titleElement.textContent = '아동 양말';
-			}
-		}
-</script>
 <body>
 	<div layout:fragment="content" class="content">
-
 		<div class="container py-5 text-center">
 			<img th:src="@{/images/YangBal.png}" class="logoimage" alt="YangBal Logo">
 			<h1 class="display-5 fw-bold">YangBal 양말 쇼핑몰</h1>
@@ -46,51 +21,56 @@
 			<div class="category-nav text-center mb-5">
 				<ul class="list-inline">
 					<li class="list-inline-item">
-						<a href="#" class="category-link active" onclick="changeCategory(this, 'WOMEN')">WOMEN</a>
+						<a href="javascript:void(0)" class="category-link" th:classappend="${category == 'WOMEN'} ? 'active'"
+							onclick="changeCategory('WOMEN')">WOMEN</a>
 					</li>
 					<li class="list-inline-item">
-						<a href="#" class="category-link" onclick="changeCategory(this, 'MEN')">MEN</a>
+						<a href="javascript:void(0)" class="category-link" th:classappend="${category == 'MEN'} ? 'active'"
+							onclick="changeCategory('MEN')">MEN</a>
 					</li>
 					<li class="list-inline-item">
-						<a href="#" class="category-link" onclick="changeCategory(this, 'KIDS')">KIDS</a>
+						<a href="javascript:void(0)" class="category-link" th:classappend="${category == 'KIDS'} ? 'active'"
+							onclick="changeCategory('KIDS')">KIDS</a>
 					</li>
 				</ul>
 			</div>
-
 			<div class="d-flex justify-content-between align-items-center mb-3">
-				<h3 id="category-title" class="fw-bold">여성 양말</h3>
+				<h3 class="fw-bold" th:text="${category == 'WOMEN' ? '여성 양말' : (category == 'MEN' ? '남성 양말' : '아동 양말')}">
+					양말
+				</h3>
 			</div>
 			<!--필터링-->
 			<div class="filter-bar d-flex flex-wrap gap-2 mb-5">
-				<select class="form-select w-auto" aria-label="양말 유형">
-					<option selected>양말 유형</option>
-					<option value="color">컬러 삭스</option>
-					<option value="regular">레귤러 삭스</option>
-					<option value="short">쇼트 삭스</option>
+				<select id="typeSelect" class="form-select w-auto" onchange="updateFilter()">
+					<option value="all">양말 유형 (전체)</option>
+					<option value="color" th:selected="${selectedType == 'color'}">컬러 삭스</option>
+					<option value="regular" th:selected="${selectedType == 'regular'}">레귤러 삭스</option>
+					<option value="short" th:selected="${selectedType == 'short'}">쇼트 삭스</option>
 				</select>
-
-				<select class="form-select w-auto" aria-label="컬러">
-					<option selected>컬러</option>
-					<option value="white">흰색</option>
-					<option value="gray">회색</option>
-					<option value="black">검정색</option>
-					<option value="red">빨강색</option>
-					<option value="orange">주황색</option>
-					<option value="yellow">노란색</option>
-					<option value="green">초록색</option>
-					<option value="blue">파랑색</option>
-					<option value="navy">남색</option>
-					<option value="purple">보라색</option>
-					<option value="pink">분홍색</option>
-					<option value="skyblue">하늘색</option>
+			
+				<select id="colorSelect" class="form-select w-auto" onchange="updateFilter()">
+					<option value="all">컬러 (전체)</option>
+					<option value="white" th:selected="${selectedColor == 'white'}">흰색 (White)</option>
+					<option value="gray" th:selected="${selectedColor == 'gray'}">회색 (Gray)</option>
+					<option value="black" th:selected="${selectedColor == 'black'}">검정색 (Black)</option>
+					<option value="red" th:selected="${selectedColor == 'red'}">빨강색 (Red)</option>
+					<option value="orange" th:selected="${selectedColor == 'orange'}">주황색 (Orange)</option>
+					<option value="yellow" th:selected="${selectedColor == 'yellow'}">노란색 (Yellow)</option>
+					<option value="green" th:selected="${selectedColor == 'green'}">초록색 (Green)</option>
+					<option value="blue" th:selected="${selectedColor == 'blue'}">파랑색 (Blue)</option>
+					<option value="navy" th:selected="${selectedColor == 'navy'}">남색 (Navy)</option>
+					<option value="purple" th:selected="${selectedColor == 'purple'}">보라색 (Purple)</option>
+					<option value="pink" th:selected="${selectedColor == 'pink'}">분홍색 (Pink)</option>
+					<option value="skyblue" th:selected="${selectedColor == 'skyblue'}">하늘색 (Skyblue)</option>
 				</select>
-				<select class="form-select w-auto" aria-label="가격">
-					<option selected>가격 (전체)</option>
-					<option value="0_5000">5,000원 미만</option>
-					<option value="5000_10000">5,000원 ~ 10,000원</option>
-					<option value="10000_15000">10,000원 ~ 15,000원</option>
-					<option value="15000_20000">15,000원 ~ 20,000원</option>
-					<option value="20000_max">20,000원 이상</option>
+			
+				<select id="priceSelect" class="form-select w-auto" onchange="updateFilter()">
+					<option value="all">가격 (전체)</option>
+					<option value="0_5000" th:selected="${selectedPrice == '0_5000'}">5,000원 미만</option>
+					<option value="5000_10000" th:selected="${selectedPrice == '5000_10000'}">5,000원 ~ 10,000원</option>
+					<option value="10000_15000" th:selected="${selectedPrice == '10000_15000'}">10,000원 ~ 15,000원</option>
+					<option value="15000_20000" th:selected="${selectedPrice == '15000_20000'}">15,000원 ~ 20,000원</option>
+					<option value="20000_max" th:selected="${selectedPrice == '20000_max'}">20,000원 이상</option>
 				</select>
 			</div>
 			<!--상품 목록-->
@@ -99,12 +79,14 @@
 					<div class="col">
 						<div class="card h-100 border-0">
 							<a th:href="'/item/' + ${item.id}" class="text-decoration-none text-dark">
-								<img th:src="@{/images/YangBal.png}" class="card-img-top item-img" alt="상품 이미지">
-
+			
+								<img th:src="@{/images/} + ${#strings.toLowerCase(item.itemCategory)} + '/' + ${item.imgName}"
+									class="card-img-top item-img" th:alt="${item.itemNm}">
+			
 								<div class="card-body px-0">
 									<h6 class="card-title mt-2" th:text="${item.itemNm}">상품명</h6>
 									<p class="card-text fw-bold" th:text="${item.price} + '원'">가격</p>
-									<p class="text-muted small" th:text="${item.itemDetail}">상세 설명</p>
+									<p class="text-muted small" th:text="${item.itemType}">유형</p>
 								</div>
 							</a>
 						</div>
@@ -114,10 +96,29 @@
 			<div th:if="${#lists.isEmpty(items)}" class="text-center py-5">
 				<p class="text-muted">등록된 상품이 없습니다.</p>
 			</div>
-
 		</div>
-	</div>
+		<script>
+			// 1. 카테고리 변경 (WOMEN, MEN, KIDS)
+			function changeCategory(category) {
+				// 카테고리를 바꾸면 필터는 초기화하고 해당 카테고리 메인으로 이동
+				location.href = "/?category=" + category;
+			}
 
+			// 2. 필터 변경 (유형, 컬러, 가격)
+			function updateFilter() {
+				// 현재 주소에서 카테고리 값을 가져옴
+				const urlParams = new URLSearchParams(window.location.search);
+				let category = urlParams.get('category');
+				if (!category) category = 'WOMEN';
+
+				// 선택된 필터 값 가져오기
+				const type = document.getElementById('typeSelect').value;
+				const color = document.getElementById('colorSelect').value;
+				const price = document.getElementById('priceSelect').value;
+
+				// 모든 값을 쿼리 스트링으로 만들어서 이동
+				location.href = `/?category=${category}&type=${type}&color=${color}&price=${price}`;
+			}
+		</script>
 </body>
-
 </html>
