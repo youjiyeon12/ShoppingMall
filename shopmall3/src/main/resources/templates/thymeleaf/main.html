@@ -1,29 +1,123 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layouts/layout1}">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/layout1}">
 
-  <head>
-      <th:block layout:fragment="css">
-          <link rel="stylesheet" th:href="@{/css/main.css}">
-      </th:block>
-  </head>
-	  
+<head>
+	<th:block layout:fragment="css">
+		<link rel="stylesheet" th:href="@{/css/main.css}">
+	</th:block>
+</head>
+<script>
+		function changeCategory(element, category) {
+			event.preventDefault();
+
+			// 모든 링크에서 active 제거
+			const links = document.querySelectorAll('.category-link');
+			links.forEach(link => {
+				link.classList.remove('active');
+			});
+
+			// 클릭한 링크에 active 추가
+			element.classList.add('active');
+
+			// 제목 변경
+			const titleElement = document.getElementById('category-title');
+			if (category === 'WOMEN') {
+				titleElement.textContent = '여성 양말';
+			} else if (category === 'MEN') {
+				titleElement.textContent = '남성 양말';
+			} else if (category === 'KIDS') {
+				titleElement.textContent = '아동 양말';
+			}
+		}
+</script>
 <body>
-<div layout:fragment="content" class="content">
+	<div layout:fragment="content" class="content">
 
-    <div class="container py-5 text-center">
-		<img th:src="@{/images/YangBal.png}" class="logoimage" alt="YangBal Logo">
-        <h1 class="display-5 fw-bold">YangBal 양말 쇼핑몰</h1>
-        <p class="lead text-muted mt-3">
-            귀여운 양말부터 실용적인 양말까지,<br>당신의 일상을 채워줄 최고의 양말들을 만나보세요.
-        </p>
+		<div class="container py-5 text-center">
+			<img th:src="@{/images/YangBal.png}" class="logoimage" alt="YangBal Logo">
+			<h1 class="display-5 fw-bold">YangBal 양말 쇼핑몰</h1>
+			<p class="lead text-muted mt-3">
+				양발, 양의 발처럼 포근하고 부드러운 양말들을 만나보세요.
+			</p>
+		</div>
+		<div class="container" style="max-width: 1000px; margin-top: 30px;">
+			<!--기본 카테고리-->
+			<div class="category-nav text-center mb-5">
+				<ul class="list-inline">
+					<li class="list-inline-item">
+						<a href="#" class="category-link active" onclick="changeCategory(this, 'WOMEN')">WOMEN</a>
+					</li>
+					<li class="list-inline-item">
+						<a href="#" class="category-link" onclick="changeCategory(this, 'MEN')">MEN</a>
+					</li>
+					<li class="list-inline-item">
+						<a href="#" class="category-link" onclick="changeCategory(this, 'KIDS')">KIDS</a>
+					</li>
+				</ul>
+			</div>
 
-        <a th:href="@{/items}" class="btn btn-primary btn-lg mt-4">상품 둘러보기</a>
-    </div>
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<h3 id="category-title" class="fw-bold">여성 양말</h3>
+			</div>
+			<!--필터링-->
+			<div class="filter-bar d-flex flex-wrap gap-2 mb-5">
+				<select class="form-select w-auto" aria-label="양말 유형">
+					<option selected>양말 유형</option>
+					<option value="color">컬러 삭스</option>
+					<option value="regular">레귤러 삭스</option>
+					<option value="short">쇼트 삭스</option>
+				</select>
 
-</div>
+				<select class="form-select w-auto" aria-label="컬러">
+					<option selected>컬러</option>
+					<option value="white">흰색</option>
+					<option value="gray">회색</option>
+					<option value="black">검정색</option>
+					<option value="red">빨강색</option>
+					<option value="orange">주황색</option>
+					<option value="yellow">노란색</option>
+					<option value="green">초록색</option>
+					<option value="blue">파랑색</option>
+					<option value="navy">남색</option>
+					<option value="purple">보라색</option>
+					<option value="pink">분홍색</option>
+					<option value="skyblue">하늘색</option>
+				</select>
+				<select class="form-select w-auto" aria-label="가격">
+					<option selected>가격 (전체)</option>
+					<option value="0_5000">5,000원 미만</option>
+					<option value="5000_10000">5,000원 ~ 10,000원</option>
+					<option value="10000_15000">10,000원 ~ 15,000원</option>
+					<option value="15000_20000">15,000원 ~ 20,000원</option>
+					<option value="20000_max">20,000원 이상</option>
+				</select>
+			</div>
+			<!--상품 목록-->
+			<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+				<th:block th:each="item, status: ${items}">
+					<div class="col">
+						<div class="card h-100 border-0">
+							<a th:href="'/item/' + ${item.id}" class="text-decoration-none text-dark">
+								<img th:src="@{/images/YangBal.png}" class="card-img-top item-img" alt="상품 이미지">
+
+								<div class="card-body px-0">
+									<h6 class="card-title mt-2" th:text="${item.itemNm}">상품명</h6>
+									<p class="card-text fw-bold" th:text="${item.price} + '원'">가격</p>
+									<p class="text-muted small" th:text="${item.itemDetail}">상세 설명</p>
+								</div>
+							</a>
+						</div>
+					</div>
+				</th:block>
+			</div>
+			<div th:if="${#lists.isEmpty(items)}" class="text-center py-5">
+				<p class="text-muted">등록된 상품이 없습니다.</p>
+			</div>
+
+		</div>
+	</div>
 
 </body>
+
 </html>
