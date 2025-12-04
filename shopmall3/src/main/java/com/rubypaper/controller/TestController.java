@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
-	@GetMapping("/")
+	@GetMapping("/test")
 	public String test() {		
 		return "3하년 화이팅  업데이트";
 	}

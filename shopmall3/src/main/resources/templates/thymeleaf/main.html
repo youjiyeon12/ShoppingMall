@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+
+  <head>
+      <th:block layout:fragment="css">
+          <link rel="stylesheet" th:href="@{/css/main.css}">
+      </th:block>
+  </head>
+	  
+<body>
+<div layout:fragment="content" class="content">
+
+    <div class="container py-5 text-center">
+		<img th:src="@{/images/YangBal.png}" class="logoimage" alt="YangBal Logo">
+        <h1 class="display-5 fw-bold">YangBal 양말 쇼핑몰</h1>
+        <p class="lead text-muted mt-3">
+            귀여운 양말부터 실용적인 양말까지,<br>당신의 일상을 채워줄 최고의 양말들을 만나보세요.
+        </p>
+
+        <a th:href="@{/items}" class="btn btn-primary btn-lg mt-4">상품 둘러보기</a>
+    </div>
+
+</div>
+
+</body>
+</html>

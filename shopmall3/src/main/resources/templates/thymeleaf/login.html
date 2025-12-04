@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+
+<head>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/auth.css}">
+    </th:block>
+</head>
+
+<body>
+<div layout:fragment="content" class="content">
+
+    <div class="auth-card">
+        <h2 class="auth-title">로그인</h2>
+        <p class="auth-subtitle">양말 쇼핑몰에 다시 오신 걸 환영해요 🧦</p>
+
+        <form th:action="@{/login}" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">아이디</label>
+                <input type="text" class="form-control" name="username">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">비밀번호</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+
+            <div th:if="${errorMessage}" class="alert alert-danger mt-2"
+                 th:text="${errorMessage}"></div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3" >로그인</button>
+
+            <p class="auth-bottom-text mt-3">
+                계정이 없으신가요?
+                <a th:href="@{/signup}">회원가입</a>
+            </p>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
