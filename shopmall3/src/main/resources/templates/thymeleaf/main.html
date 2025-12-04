@@ -7,6 +7,7 @@
 		<link rel="stylesheet" th:href="@{/css/main.css}">
 	</th:block>
 </head>
+
 <body>
 	<div layout:fragment="content" class="content">
 		<div class="container py-5 text-center">
@@ -21,23 +22,33 @@
 			<div class="category-nav text-center mb-5">
 				<ul class="list-inline">
 					<li class="list-inline-item">
-						<a href="javascript:void(0)" class="category-link" th:classappend="${category == 'WOMEN'} ? 'active'"
+						<a href="javascript:void(0)" class="category-link"
+							th:classappend="${category == 'WOMEN'} ? 'active'"
 							onclick="changeCategory('WOMEN')">WOMEN</a>
 					</li>
 					<li class="list-inline-item">
-						<a href="javascript:void(0)" class="category-link" th:classappend="${category == 'MEN'} ? 'active'"
-							onclick="changeCategory('MEN')">MEN</a>
+						<a href="javascript:void(0)" class="category-link"
+							th:classappend="${category == 'MEN'} ? 'active'" onclick="changeCategory('MEN')">MEN</a>
 					</li>
 					<li class="list-inline-item">
-						<a href="javascript:void(0)" class="category-link" th:classappend="${category == 'KIDS'} ? 'active'"
-							onclick="changeCategory('KIDS')">KIDS</a>
+						<a href="javascript:void(0)" class="category-link"
+							th:classappend="${category == 'KIDS'} ? 'active'" onclick="changeCategory('KIDS')">KIDS</a>
 					</li>
 				</ul>
 			</div>
 			<div class="d-flex justify-content-between align-items-center mb-3">
-				<h3 class="fw-bold" th:text="${category == 'WOMEN' ? '여성 양말' : (category == 'MEN' ? '남성 양말' : '아동 양말')}">
+				<h3 class="fw-bold"
+					th:text="${category == 'WOMEN' ? '여성 양말' : (category == 'MEN' ? '남성 양말' : '아동 양말')}">
 					양말
 				</h3>
+			</div>
+
+			<div class="d-flex justify-content-end mb-3">
+				<div class="input-group" style="width: 300px;">
+					<input type="text" id="searchInput" class="form-control" placeholder="상품명 검색"
+						th:value="${searchQuery}" onkeyup="if(window.event.keyCode==13){updateFilter()}">
+					<button class="btn btn-outline-secondary" type="button" onclick="updateFilter()">검색</button>
+				</div>
 			</div>
 			<!--필터링-->
 			<div class="filter-bar d-flex flex-wrap gap-2 mb-5">
@@ -47,7 +58,7 @@
 					<option value="regular" th:selected="${selectedType == 'regular'}">레귤러 삭스</option>
 					<option value="short" th:selected="${selectedType == 'short'}">쇼트 삭스</option>
 				</select>
-			
+
 				<select id="colorSelect" class="form-select w-auto" onchange="updateFilter()">
 					<option value="all">컬러 (전체)</option>
 					<option value="white" th:selected="${selectedColor == 'white'}">흰색 (White)</option>
@@ -63,13 +74,15 @@
 					<option value="pink" th:selected="${selectedColor == 'pink'}">분홍색 (Pink)</option>
 					<option value="skyblue" th:selected="${selectedColor == 'skyblue'}">하늘색 (Skyblue)</option>
 				</select>
-			
+
 				<select id="priceSelect" class="form-select w-auto" onchange="updateFilter()">
 					<option value="all">가격 (전체)</option>
 					<option value="0_5000" th:selected="${selectedPrice == '0_5000'}">5,000원 미만</option>
 					<option value="5000_10000" th:selected="${selectedPrice == '5000_10000'}">5,000원 ~ 10,000원</option>
-					<option value="10000_15000" th:selected="${selectedPrice == '10000_15000'}">10,000원 ~ 15,000원</option>
-					<option value="15000_20000" th:selected="${selectedPrice == '15000_20000'}">15,000원 ~ 20,000원</option>
+					<option value="10000_15000" th:selected="${selectedPrice == '10000_15000'}">10,000원 ~ 15,000원
+					</option>
+					<option value="15000_20000" th:selected="${selectedPrice == '15000_20000'}">15,000원 ~ 20,000원
+					</option>
 					<option value="20000_max" th:selected="${selectedPrice == '20000_max'}">20,000원 이상</option>
 				</select>
 			</div>
@@ -79,16 +92,21 @@
 					<div class="col">
 						<div class="card h-100 border-0">
 							<a th:href="'/item/' + ${item.id}" class="text-decoration-none text-dark">
-			
+
 								<img th:src="@{/images/} + ${#strings.toLowerCase(item.itemCategory)} + '/' + ${item.imgName}"
 									class="card-img-top item-img" th:alt="${item.itemNm}">
-			
+
 								<div class="card-body px-0">
 									<h6 class="card-title mt-2" th:text="${item.itemNm}">상품명</h6>
 									<p class="card-text fw-bold" th:text="${item.price} + '원'">가격</p>
 									<p class="text-muted small" th:text="${item.itemType}">유형</p>
 								</div>
 							</a>
+							<button type="button" class="btn btn-light rounded-circle shadow-sm cart-btn"
+								th:data-id="${item.id}" th:data-name="${item.itemNm}" th:data-price="${item.price}"
+								onclick="addCart(this)">
+								🛒
+							</button>
 						</div>
 					</div>
 				</th:block>
@@ -98,27 +116,74 @@
 			</div>
 		</div>
 		<script>
-			// 1. 카테고리 변경 (WOMEN, MEN, KIDS)
 			function changeCategory(category) {
-				// 카테고리를 바꾸면 필터는 초기화하고 해당 카테고리 메인으로 이동
 				location.href = "/?category=" + category;
 			}
 
-			// 2. 필터 변경 (유형, 컬러, 가격)
+			function handleSearchKey(event) {
+				if (event.keyCode === 13) {
+					updateFilter();
+				}
+			}
+
 			function updateFilter() {
-				// 현재 주소에서 카테고리 값을 가져옴
 				const urlParams = new URLSearchParams(window.location.search);
 				let category = urlParams.get('category');
 				if (!category) category = 'WOMEN';
 
-				// 선택된 필터 값 가져오기
 				const type = document.getElementById('typeSelect').value;
 				const color = document.getElementById('colorSelect').value;
 				const price = document.getElementById('priceSelect').value;
+				const searchQuery = document.getElementById('searchInput').value;
 
-				// 모든 값을 쿼리 스트링으로 만들어서 이동
-				location.href = `/?category=${category}&type=${type}&color=${color}&price=${price}`;
+				location.href = `/?category=${category}&type=${type}&color=${color}&price=${price}&searchQuery=${searchQuery}`;
+			}
+
+			// 수정된 장바구니 함수
+			function addCart(element) {
+
+				var id = element.getAttribute('data-id');
+				var name = element.getAttribute('data-name');
+				var count = 1; // 기본 수량 1개
+
+				// 확인 창 띄우기
+				if (!confirm("'" + name + "' 상품을 장바구니에 담으시겠습니까?")) {
+					return; // 취소 누르면 중단
+				}
+
+				// 서버로 데이터 전송 (AJAX)
+				fetch('/cart', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: 'itemId=' + id + '&count=' + count
+				})
+					.then(response => {
+						if (response.ok) {
+							return response.text();
+						} else {
+							return response.text().then(text => {throw new Error(text)});
+						}
+					})
+					.then(message => {
+						// 성공 시
+						if (confirm(message + "\n장바구니로 이동하시겠습니까?")) {
+							location.href = "/cart";
+						}
+					})
+					.catch(error => {
+						// 실패 시
+						if (error.message === "로그인이 필요합니다.") {
+							if (confirm("로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
+								location.href = "/login";
+							}
+						} else {
+							alert("에러 발생: " + error.message);
+						}
+					});
 			}
 		</script>
 </body>
+
 </html>

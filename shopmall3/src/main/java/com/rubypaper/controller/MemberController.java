@@ -26,16 +26,17 @@ public class MemberController {
     private final MemberService memberService;
     private final ItemRepository itemRepository;
     
-    // 메인화면
+ // 메인화면
     @GetMapping("/")
     public String main(
             @RequestParam(value = "category", defaultValue = "WOMEN") String categoryStr,
             @RequestParam(value = "type", required = false) String itemType,
             @RequestParam(value = "color", required = false) String color,
             @RequestParam(value = "price", required = false) String priceRange,
+            @RequestParam(value = "searchQuery", required = false) String searchQuery,
             Model model) {
         
-        // 1. 카테고리 변환 (String -> Enum)
+        // 1. 카테고리 처리
         ItemCategory category;
         try {
             category = ItemCategory.valueOf(categoryStr.toUpperCase());
@@ -43,34 +44,30 @@ public class MemberController {
             category = ItemCategory.WOMEN;
         }
 
-        // 2. 필터 값 정리 ('전체' 선택 시 null로 처리)
+        // 2. 필터 값 정리 (빈 문자열이면 null로 변환)
         if ("양말 유형".equals(itemType) || "all".equals(itemType)) itemType = null;
         if ("컬러".equals(color) || "all".equals(color)) color = null;
+        if (searchQuery != null && searchQuery.trim().isEmpty()) searchQuery = null; // 검색어 공백 처리
         
         // 3. 가격 범위 파싱
         Integer minPrice = null;
         Integer maxPrice = null;
-        
         if (priceRange != null && !priceRange.equals("가격") && !priceRange.equals("all")) {
             String[] prices = priceRange.split("_");
-            if (prices.length >= 1) {
-                minPrice = Integer.parseInt(prices[0]); // 최소
-            }
-            if (prices.length >= 2 && !prices[1].equals("max")) {
-                maxPrice = Integer.parseInt(prices[1]); // 최대
-            }
+            if (prices.length >= 1) minPrice = Integer.parseInt(prices[0]);
+            if (prices.length >= 2 && !prices[1].equals("max")) maxPrice = Integer.parseInt(prices[1]);
         }
 
-        // 4. DB 검색 실행
-        List<Item> items = itemRepository.findByFilters(category, itemType, color, minPrice, maxPrice);
+        // 4. DB 검색 (searchQuery 포함)
+        List<Item> items = itemRepository.findByFilters(category, itemType, color, minPrice, maxPrice, searchQuery);
         
-        // 5. 화면에 데이터 전달
+        // 5. 데이터 전달
         model.addAttribute("items", items);
         model.addAttribute("category", category.toString());
         model.addAttribute("selectedType", itemType);
         model.addAttribute("selectedColor", color);
         model.addAttribute("selectedPrice", priceRange);
-        
+        model.addAttribute("searchQuery", searchQuery);
         return "main";
     }
 
