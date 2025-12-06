@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -39,6 +40,10 @@ public class Member {
     @NotBlank(message = "비밀번호는 필수 입력값입니다.")
     @Column(nullable = false)
     private String password;
+    
+    @Transient 
+    @NotBlank(message = "비밀번호 확인은 필수입니다.")
+    private String passwordConfirm;
 
     @NotBlank(message = "이름을 입력해주세요.")
     @Size(max = 20, message = "이름은 최대 20자까지 가능합니다.")

@@ -98,6 +98,12 @@ public class MemberController {
             bindingResult.rejectValue("password", "invalid", "비밀번호는 영문, 숫자, 특수문자를 각각 최소 1개 이상 포함해야 합니다.");
             return "signup";
         }
+        
+        // 비밀번호 & 비밀번호 확인 체크
+        if (!member.getPassword().equals(member.getPasswordConfirm())) {
+            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+            return "signup";
+        }
 
         // 아이디 중복 검사
         if (memberService.isUsernameDuplicate(member.getUsername())) {
