@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+
+<head>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/itemForm.css}">
+    </th:block>
+</head>
+
+<body>
+<div layout:fragment="content" class="container py-5" style="max-width: 700px;">
+
+    <h2 class="mb-4 fw-bold">상품 등록</h2>
+
+    <form th:action="@{/item/new}" method="post" th:object="${item}"
+          enctype="multipart/form-data">
+
+        <!-- 상품명 -->
+        <div class="mb-3">
+            <label class="form-label">상품명</label>
+            <input type="text" class="form-control" th:field="*{itemNm}">
+            <div class="text-danger" th:errors="*{itemNm}"></div>
+        </div>
+
+        <!-- 가격 -->
+        <div class="mb-3">
+            <label class="form-label">가격</label>
+            <input type="number" class="form-control" th:field="*{price}">
+            <div class="text-danger" th:errors="*{price}"></div>
+        </div>
+
+        <!-- 유형 -->
+        <div class="mb-3">
+            <label class="form-label">유형</label>
+            <input type="text" class="form-control" th:field="*{itemType}">
+        </div>
+
+        <!-- 색상 1 -->
+        <div class="mb-3">
+            <label class="form-label">색상 1</label>
+            <input type="text" class="form-control" th:field="*{color1}">
+        </div>
+
+        <!-- 색상 2 -->
+        <div class="mb-3">
+            <label class="form-label">색상 2</label>
+            <input type="text" class="form-control" th:field="*{color2}">
+        </div>
+
+        <!-- 색상 3 -->
+        <div class="mb-3">
+            <label class="form-label">색상 3</label>
+            <input type="text" class="form-control" th:field="*{color3}">
+        </div>
+
+        <!-- 카테고리 ENUM -->
+        <div class="mb-3">
+            <label class="form-label">카테고리(itemCategory)</label>
+            <select class="form-select" th:field="*{itemCategory}">
+                <option value="WOMEN">WOMEN</option>
+                <option value="MEN">MEN</option>
+                <option value="KIDS">KIDS</option>
+            </select>
+        </div>
+
+        <!-- 이미지 -->
+        <div class="mb-3">
+            <label class="form-label">상품 이미지</label>
+            <input type="file" class="form-control" name="imageFile" required>
+        </div>
+
+        <button class="btn btn-primary w-100 mt-3">상품 등록</button>
+
+    </form>
+
+</div>
+</body>
+</html>
