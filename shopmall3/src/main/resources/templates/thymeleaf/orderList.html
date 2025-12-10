@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+
+<head>
+    <th:block layout:fragment="css">
+        <style>
+            .order-box { border:1px solid #ccc; padding:20px; border-radius:10px; margin-bottom:20px; }
+        </style>
+    </th:block>
+</head>
+
+<body>
+<div layout:fragment="content" class="content">
+    <div class="container mt-5">
+
+        <h2 class="mb-4">구매 내역</h2>
+
+        <div th:each="order : ${orders}" class="order-box">
+
+            <h5>주문번호: <span th:text="${order.id}"></span></h5>
+            <p>주문일자: <span th:text="${order.orderDate}"></span></p>
+            <p class="fw-bold">총 금액: <span th:text="${order.totalPrice}"></span>원</p>
+
+            <hr>
+
+            <ul>
+                <li th:each="item : ${order.orderItems}">
+                    <span th:text="${item.itemName}"></span>
+                    &nbsp; x <span th:text="${item.count}"></span>
+                    &nbsp; (<span th:text="${item.price}"></span>원)
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

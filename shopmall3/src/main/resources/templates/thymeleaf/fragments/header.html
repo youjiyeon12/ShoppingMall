@@ -1,48 +1,58 @@
-<!DOCTYPE html>
-<html lang ="en" xmlns:th ="http://www.thymeleaf.org">
 <div th:fragment="header">
- ----------header----------상품등록 상품관리 장바구니 구매이력  로그인 로그아웃 --------
- <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-   <a class="navbar-brand" href="#">  Navbar</a>
-   
-   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-     <span class="navbar-toggler-icon"></span>
-   </button>
-   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-       <li class="nav-item">
-         <a class="nav-link active" aria-current="page" href="#">상품등록</a>
-       </li>
-       
-       
-       
-       <li class="nav-item">
-         <a class="nav-link" href="#">Link</a>
-       </li>
-       <li class="nav-item dropdown">
-         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-           Dropdown
-         </a>
-         <ul class="dropdown-menu">
-           <li><a class="dropdown-item" href="#">Action</a></li>
-           <li><a class="dropdown-item" href="#">Another action</a></li>
-           <li><hr class="dropdown-divider"></li>
-           <li><a class="dropdown-item" href="#">Something else here</a></li>
-         </ul>
-       </li>
-       <li class="nav-item">
-         <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-       </li>
-     </ul>
-     
-     
-     <form class="d-flex" role="search">
-       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-       <button class="btn btn-outline-success" type="submit">Search</button>
-     </form>
-   </div>
- </div>
-</nav>    
-<div>
-</html>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+
+            <!-- 로고 -->
+            <a class="navbar-brand d-flex align-items-center fw-bold" th:href="@{/}">
+                <img th:src="@{/images/YangBal.png}"
+                     alt="YangBal Logo"
+                     style="height: 36px; margin-right: 10px;">
+                YangBal
+            </a>
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+                    aria-controls="navbarMenu" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMenu">
+
+                <!-- 왼쪽 메뉴 -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">상품목록</a>
+                    </li>
+					<li class="nav-item">
+                        <a class="nav-link" th:href="@{/item/new}">상품등록</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/cart}">장바구니</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/orders}">구매이력</a>
+                    </li>
+                </ul>
+
+                <!-- 오른쪽 로그인/로그아웃 -->
+                <div class="d-flex">
+
+                    <!-- 로그인 안됨 -->
+                    <div th:if="${session.loginMember == null}">
+                        <a th:href="@{/login}" class="btn btn-outline-primary me-2">로그인</a>
+                        <a th:href="@{/signup}" class="btn btn-primary">회원가입</a>
+                    </div>
+
+                    <!-- 로그인됨 -->
+                    <div th:if="${session.loginMember != null}" class="d-flex align-items-center">
+                        <span class="me-3 fw-semibold"
+                              th:text="${session.loginMember.username + ' 님'}"></span>
+                        <a th:href="@{/logout}" class="btn btn-danger btn-sm">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+

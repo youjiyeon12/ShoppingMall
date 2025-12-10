@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+
+<head>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/auth.css}">
+    </th:block>
+</head>
+
+<body>
+
+<div layout:fragment="content" class="content">
+
+    <div class="auth-card">
+        <h2 class="auth-title">회원가입</h2>
+        <p class="auth-subtitle">YangBal 계정을 생성하세요.</p>
+
+        <form th:action="@{/signup}" method="post" th:object="${member}">
+
+            <div class="mb-3">
+                <label class="form-label">아이디</label>
+                <input class="form-control" th:field="*{username}">
+                <div class="form-error" th:errors="*{username}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">비밀번호</label>
+                <input type="password" class="form-control"
+                       th:field="*{password}">
+                <div class="form-error" th:errors="*{password}"></div>
+            </div>
+			
+			<div class="mb-3">
+			    <label class="form-label">비밀번호 확인</label>
+			    <input type="password" class="form-control" 
+			           th:field="*{passwordConfirm}">
+			    <div class="form-error" th:errors="*{passwordConfirm}"></div>
+			</div>
+
+
+            <div class="mb-3">
+                <label class="form-label">이름</label>
+                <input class="form-control" th:field="*{name}">
+                <div class="form-error" th:errors="*{name}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">이메일</label>
+                <input class="form-control" th:field="*{email}">
+                <div class="form-error" th:errors="*{email}"></div>
+            </div>
+
+            <div class="alert alert-danger mt-2"
+                 th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+            <button class="btn btn-primary w-100 mt-3">회원가입</button>
+
+            <p class="auth-bottom-text mt-3">
+                이미 계정이 있으신가요?
+                <a th:href="@{/login}">로그인</a>
+            </p>
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

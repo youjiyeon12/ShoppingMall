@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/layout1}">
+
+<head>
+	<th:block layout:fragment="css">
+		<link rel="stylesheet" th:href="@{/css/main.css}">
+	</th:block>
+</head>
+
+<body>
+	<div layout:fragment="content" class="content">
+		<div class="container py-5 text-center">
+			<img th:src="@{/images/YangBal.png}" class="logoimage" alt="YangBal Logo">
+			<h1 class="display-5 fw-bold">YangBal 양말 쇼핑몰</h1>
+			<p class="lead text-muted mt-3">
+				양발, 양의 발처럼 포근하고 부드러운 양말들을 만나보세요.
+			</p>
+		</div>
+		<div class="container" style="max-width: 1000px; margin-top: 30px;">
+			<!--기본 카테고리-->
+			<div class="category-nav text-center mb-5">
+				<ul class="list-inline">
+					<li class="list-inline-item">
+						<a href="javascript:void(0)" class="category-link"
+							th:classappend="${category == 'WOMEN'} ? 'active'"
+							onclick="changeCategory('WOMEN')">WOMEN</a>
+					</li>
+					<li class="list-inline-item">
+						<a href="javascript:void(0)" class="category-link"
+							th:classappend="${category == 'MEN'} ? 'active'" onclick="changeCategory('MEN')">MEN</a>
+					</li>
+					<li class="list-inline-item">
+						<a href="javascript:void(0)" class="category-link"
+							th:classappend="${category == 'KIDS'} ? 'active'" onclick="changeCategory('KIDS')">KIDS</a>
+					</li>
+				</ul>
+			</div>
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<h3 class="fw-bold"
+					th:text="${category == 'WOMEN' ? '여성 양말' : (category == 'MEN' ? '남성 양말' : '아동 양말')}">
+					양말
+				</h3>
+			</div>
+
+			<div class="d-flex justify-content-end mb-3">
+				<div class="input-group" style="width: 300px;">
+					<input type="text" id="searchInput" class="form-control" placeholder="상품명 검색"
+						th:value="${searchQuery}" onkeyup="if(window.event.keyCode==13){updateFilter()}">
+					<button class="btn btn-outline-secondary" type="button" onclick="updateFilter()">검색</button>
+				</div>
+			</div>
+			<!--필터링-->
+			<div class="filter-bar d-flex flex-wrap gap-2 mb-5">
+				<select id="typeSelect" class="form-select w-auto" onchange="updateFilter()">
+					<option value="all">양말 유형 (전체)</option>
+					<option value="color" th:selected="${selectedType == 'color'}">컬러 삭스</option>
+					<option value="regular" th:selected="${selectedType == 'regular'}">레귤러 삭스</option>
+					<option value="short" th:selected="${selectedType == 'short'}">쇼트 삭스</option>
+				</select>
+
+				<select id="colorSelect" class="form-select w-auto" onchange="updateFilter()">
+					<option value="all">컬러 (전체)</option>
+					<option value="white" th:selected="${selectedColor == 'white'}">흰색 (White)</option>
+					<option value="gray" th:selected="${selectedColor == 'gray'}">회색 (Gray)</option>
+					<option value="black" th:selected="${selectedColor == 'black'}">검정색 (Black)</option>
+					<option value="red" th:selected="${selectedColor == 'red'}">빨강색 (Red)</option>
+					<option value="orange" th:selected="${selectedColor == 'orange'}">주황색 (Orange)</option>
+					<option value="yellow" th:selected="${selectedColor == 'yellow'}">노란색 (Yellow)</option>
+					<option value="green" th:selected="${selectedColor == 'green'}">초록색 (Green)</option>
+					<option value="blue" th:selected="${selectedColor == 'blue'}">파랑색 (Blue)</option>
+					<option value="navy" th:selected="${selectedColor == 'navy'}">남색 (Navy)</option>
+					<option value="purple" th:selected="${selectedColor == 'purple'}">보라색 (Purple)</option>
+					<option value="pink" th:selected="${selectedColor == 'pink'}">분홍색 (Pink)</option>
+					<option value="skyblue" th:selected="${selectedColor == 'skyblue'}">하늘색 (Skyblue)</option>
+				</select>
+
+				<select id="priceSelect" class="form-select w-auto" onchange="updateFilter()">
+					<option value="all">가격 (전체)</option>
+					<option value="0_5000" th:selected="${selectedPrice == '0_5000'}">5,000원 미만</option>
+					<option value="5000_10000" th:selected="${selectedPrice == '5000_10000'}">5,000원 ~ 10,000원</option>
+					<option value="10000_15000" th:selected="${selectedPrice == '10000_15000'}">10,000원 ~ 15,000원
+					</option>
+					<option value="15000_20000" th:selected="${selectedPrice == '15000_20000'}">15,000원 ~ 20,000원
+					</option>
+					<option value="20000_max" th:selected="${selectedPrice == '20000_max'}">20,000원 이상</option>
+				</select>
+			</div>
+			<!--상품 목록-->
+			<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+				<th:block th:each="item, status: ${items}">
+					<div class="col">
+						<div class="card h-100 border-0">
+							<a th:href="'/item/' + ${item.id}" class="text-decoration-none text-dark">
+
+								<img th:src="@{'/images/' + ${#strings.toLowerCase(item.itemCategory)} + '/' + ${item.imgName}}"
+								     class="card-img-top item-img" th:alt="${item.itemNm}">
+
+								<div class="card-body px-0">
+									<h6 class="card-title mt-2" th:text="${item.itemNm}">상품명</h6>
+									<p class="card-text fw-bold" th:text="${item.price} + '원'">가격</p>
+									<p class="text-muted small" th:text="${item.itemType}">유형</p>
+								</div>
+							</a>
+							<button type="button" class="btn btn-light rounded-circle shadow-sm cart-btn"
+								th:data-id="${item.id}" th:data-name="${item.itemNm}" th:data-price="${item.price}"
+								onclick="addCart(this)">
+								🛒
+							</button>
+						</div>
+					</div>
+				</th:block>
+			</div>
+			<div th:if="${#lists.isEmpty(items)}" class="text-center py-5">
+				<p class="text-muted">등록된 상품이 없습니다.</p>
+			</div>
+		</div>
+		<script>
+			function changeCategory(category) {
+				location.href = "/?category=" + category;
+			}
+
+			function handleSearchKey(event) {
+				if (event.keyCode === 13) {
+					updateFilter();
+				}
+			}
+
+			function updateFilter() {
+				const urlParams = new URLSearchParams(window.location.search);
+				let category = urlParams.get('category');
+				if (!category) category = 'WOMEN';
+
+				const type = document.getElementById('typeSelect').value;
+				const color = document.getElementById('colorSelect').value;
+				const price = document.getElementById('priceSelect').value;
+				const searchQuery = document.getElementById('searchInput').value;
+
+				location.href = `/?category=${category}&type=${type}&color=${color}&price=${price}&searchQuery=${searchQuery}`;
+			}
+
+			// 수정된 장바구니 함수
+			function addCart(element) {
+
+				var id = element.getAttribute('data-id');
+				var name = element.getAttribute('data-name');
+				var count = 1; // 기본 수량 1개
+
+				// 확인 창 띄우기
+				if (!confirm("'" + name + "' 상품을 장바구니에 담으시겠습니까?")) {
+					return; // 취소 누르면 중단
+				}
+
+				// 서버로 데이터 전송 (AJAX)
+				fetch('/cart', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: 'itemId=' + id + '&count=' + count
+				})
+					.then(response => {
+						if (response.ok) {
+							return response.text();
+						} else {
+							return response.text().then(text => {throw new Error(text)});
+						}
+					})
+					.then(message => {
+						// 성공 시
+						if (confirm(message + "\n장바구니로 이동하시겠습니까?")) {
+							location.href = "/cart";
+						}
+					})
+					.catch(error => {
+						// 실패 시
+						if (error.message === "로그인이 필요합니다.") {
+							if (confirm("로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
+								location.href = "/login";
+							}
+						} else {
+							alert("에러 발생: " + error.message);
+						}
+					});
+			}
+		</script>
+</body>
+
+</html>
