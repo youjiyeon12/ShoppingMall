@@ -63,7 +63,7 @@
 <br>
 **Database**
 <br>
-![h2database](https://img.shields.io/badge/h2database-E4A95C?style=for-the-badge&logo=h2database&logoColor=orange)
+![h2database](https://img.shields.io/badge/h2database-eb9479?style=for-the-badge&logo=h2database&logoColor=red)
 <br>
 
 #
