@@ -1,4 +1,4 @@
-# YangBal 양말 쇼핑몰 <img width="40" height="32" alt="YangBal" src="https://github.com/user-attachments/assets/94cbee48-3696-443d-859c-a00430280283" />
+# YangBal 쇼핑몰 <img width="40" height="32" alt="YangBal" src="https://github.com/user-attachments/assets/94cbee48-3696-443d-859c-a00430280283" />
 양발, 양의 발처럼 포근하고 부드러운 양말들을 만나보세요.
 
 ## TEAM
