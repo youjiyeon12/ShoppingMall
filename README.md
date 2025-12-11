@@ -35,17 +35,17 @@
 <br>
 
 ## 화면 구성
-📖회원가입📖
+☆회원가입☆
 <img width="2177" height="1398" alt="signup" src="https://github.com/user-attachments/assets/15f271ec-80e0-4c3c-9024-b930739ac313" />
-📖로그인📖
+☆로그인☆
 <img width="2177" height="1017" alt="login" src="https://github.com/user-attachments/assets/fdf7c27a-b2df-4cff-a7a2-91e6eab003cf" />
-📖상품목록(메인)📖
+☆상품목록(메인)☆
 <img width="2154" height="4350" alt="main" src="https://github.com/user-attachments/assets/7165a494-9abc-4362-88e5-372b33558716" />
-📖장바구니📖
+☆장바구니☆
 <img width="2154" height="1431" alt="cart" src="https://github.com/user-attachments/assets/db173235-5382-4362-a5b6-9ba1c9b0093a" />
-📖구매이력📖
+☆구매이력☆
 <img width="2177" height="977" alt="orders" src="https://github.com/user-attachments/assets/252858b4-a367-4516-ae2a-a82366e49107" />
-📖상품등록(관리자)📖
+☆상품등록(관리자)☆
 <img width="2154" height="1614" alt="item_new" src="https://github.com/user-attachments/assets/f7aa5bd8-11dc-4cbe-bbd3-d0182f6810ba" />
 
 
