@@ -1,6 +1,8 @@
 # <img width="30" height="30" alt="YangBal" src="https://github.com/user-attachments/assets/94cbee48-3696-443d-859c-a00430280283" />YangBal
 
-**Spring Boot를 이용한 쇼핑몰 프로젝트**
+**YangBal 양말 쇼핑몰**
+양발, 양의 발처럼 포근하고 부드러운 양말들을 만나보세요.
+#
 
 ## TEAM
 <table>
