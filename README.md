@@ -1,4 +1,4 @@
-# <img width="30" height="30" alt="YangBal" src="https://github.com/user-attachments/assets/94cbee48-3696-443d-859c-a00430280283" />YangBal
+# <img width="45" height="45" alt="YangBal" src="https://github.com/user-attachments/assets/94cbee48-3696-443d-859c-a00430280283" /> YangBal
 
 **YangBal 양말 쇼핑몰**
 <br>
